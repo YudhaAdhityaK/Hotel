@@ -22,7 +22,7 @@ class ReservationController extends Controller
      */
     public function create()
     {
-        //
+          return view('reservations.create');
     }
 
     /**
@@ -30,7 +30,20 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+ // ✅ Validasi input
+    $request->validate([
+        'guest_name' => 'required',
+        'room_number' => 'required',
+        'check_in' => 'required|date',
+        'check_out' => 'required|date',
+        'status' => 'required'
+    ]);
+
+    // ✅ Simpan data ke tabel 'reservations'
+    \App\Models\Reservation::create($request->all());
+
+    // ✅ Kembali ke halaman utama (index) + pesan sukses
+    return redirect()->route('reservations.index')->with('success', 'Data berhasil ditambahkan!');
     }
 
     /**

@@ -20,8 +20,8 @@
         </tr>
         @foreach($reservations as $r)
         <tr>
-            <td>{{ $r->guest_name }}</td>
-            <td>{{ $r->room_number }}</td>
+            <td>{{ $r->nama_tamu }}</td>
+            <td>{{ $r->nomer_kamar }}</td>
             <td>{{ $r->check_in }}</td>
             <td>{{ $r->check_out }}</td>
             <td>{{ $r->status }}</td>
