@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
 
 class ReservationController extends Controller
 {
@@ -32,8 +35,8 @@ class ReservationController extends Controller
     {
  // ✅ Validasi input
     $request->validate([
-        'guest_name' => 'required',
-        'room_number' => 'required',
+        'nama_tamu' => 'required',
+        'nomer_kamar' => 'required',
         'check_in' => 'required|date',
         'check_out' => 'required|date',
         'status' => 'required'
@@ -51,7 +54,7 @@ class ReservationController extends Controller
      */
     public function show(Reservation $reservation)
     {
-        //
+        return view('reservations.edit', compact('reservation'));
     }
 
     /**
@@ -59,7 +62,7 @@ class ReservationController extends Controller
      */
     public function edit(Reservation $reservation)
     {
-        //
+         return view('reservations.edit', compact('reservation'));
     }
 
     /**
@@ -67,7 +70,17 @@ class ReservationController extends Controller
      */
     public function update(Request $request, Reservation $reservation)
     {
-        //
+           $request->validate([
+        'nama_tamu' => 'required',
+        'nomer_kamar' => 'required',
+        'check_in' => 'required|date',
+        'check_out' => 'required|date',
+        'status' => 'required'
+    ]);
+
+    $reservation->update($request->all());
+
+    return redirect()->route('reservations.index')->with('success', 'Data berhasil diperbarui!');
     }
 
     /**
@@ -75,6 +88,17 @@ class ReservationController extends Controller
      */
     public function destroy(Reservation $reservation)
     {
-        //
+           $reservation->delete();
+
+    return redirect()->route('reservations.index')->with('success', 'Data berhasil dihapus!');
     }
+    
+    public function exportPdf()
+{
+    $reservations = \App\Models\Reservation::all();
+
+    $pdf = Pdf::loadView('reservations.pdf', compact('reservations'));
+    return $pdf->download('data-reservasi.pdf');
+}
+
 }

@@ -28,8 +28,9 @@
             <option value="Checked-out">Checked-out</option>
         </select><br><br>
 
-        <button type="submit">Simpan</button>
+        <button type="submit" href="{{ route('reservations.index') }}">Simpan</button>
         <a href="{{ route('reservations.index') }}">Batal</a>
+
     </form>
 </body>
 </html>
